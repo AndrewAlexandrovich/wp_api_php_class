@@ -53,9 +53,8 @@ $addPost = [
 $post_data повертає массив результат виконання, якщо виникла помилка - код помилки, якщо успіх id нового посту та інформацію про нього. <br>
 $post_data відповіді не фільтруються а повертаються як є.<br>
 Приклад отримання списку категорій, постів, посту по id:<br><br>
-<code>
-	$allCategories = $wp_client->categories();
-	$allPosts = $wp_client->posts();
-	$post = $wp_client->getPost($id);
-</code>
+<code>$allCategories = $wp_client->categories();</code>
+<code>$allPosts = $wp_client->posts();</code>
+<code>$post = $wp_client->getPost($id);</code>
+
 *Потім допишу весь список методів, зараз можете його переглянути в класі.
