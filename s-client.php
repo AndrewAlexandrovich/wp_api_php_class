@@ -69,6 +69,18 @@ class wp_api{
 			$point = sprintf($this->points['post'], $param['id']);
 			$result = $this->request('DELETE', $param, $point);
 			
+		}elseif(isset($param['per_page']) || isset($param['page'])){
+			
+			$parm = '?';
+			if(isset($param['per_page']) && $param['per_page']){
+				$parm .= 'per_page='.$param['per_page'].'&';
+			}
+			if(isset($param['page']) && $param['page']){
+				$parm .= 'page='.$param['page'];
+			}else{
+				$parm = rtrim($parm, '&');
+			}
+			$result = $this->request('GET', array(), $this->points['posts'].$parm);
 		}else{
 			//get all 
 			$result = $this->request('GET', array(), $this->points['posts']);
@@ -99,6 +111,20 @@ class wp_api{
 			$point = sprintf($this->points['category'], $param['id']);
 			$result = $this->request('DELETE', $param, $point);
 			
+		}elseif(isset($param['per_page']) || isset($param['page'])){
+			
+			$parm = '?';
+			if(isset($param['per_page']) && $param['per_page']){
+				$parm .= 'per_page='.$param['per_page'].'&';
+			}
+			if(isset($param['page']) && $param['page']){
+				$parm .= 'page='.$param['page'];
+			}else{
+				$parm = rtrim($parm, '&');
+			}
+			
+			//get all 
+			$result = $this->request('GET', array(), $this->points['categories'].$parm);
 		}else{
 			//get all 
 			$result = $this->request('GET', array(), $this->points['categories']);
@@ -225,6 +251,20 @@ class wp_api{
 			$point = sprintf($this->points['tag'], $param['id']);
 			$result = $this->request('DELETE', $param, $point);
 			
+		}elseif(isset($param['per_page']) || isset($param['page'])){
+			
+			$parm = '?';
+			if(isset($param['per_page']) && $param['per_page']){
+				$parm .= 'per_page='.$param['per_page'].'&';
+			}
+			if(isset($param['page']) && $param['page']){
+				$parm .= 'page='.$param['page'];
+			}else{
+				$parm = rtrim($parm, '&');
+			}
+			
+			//get all 
+			$result = $this->request('GET', array(), $this->points['tags'].$parm);
 		}else{
 			//get all 
 			$result = $this->request('GET', array(), $this->points['tags']);
@@ -278,6 +318,7 @@ class wp_api{
 		}else{
 			$data = array();
 		}
+		
 
 		curl_setopt($curl, CURLOPT_TIMEOUT, 30);
 		curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
@@ -287,6 +328,8 @@ class wp_api{
 		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $type);
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, array(
 			"Authorization: Basic ".$this->auth,		
 			"Content-Type: application/json", 
@@ -296,6 +339,7 @@ class wp_api{
 		);
 
 		$response = curl_exec($curl);
+
 		$err = curl_error($curl);
 		curl_close($curl);
 		
@@ -343,6 +387,7 @@ class wp_api{
 				"content-type: ".mime_content_type($file_path),
 			  ),
 			  CURLOPT_POSTFIELDS => $data,
+			  
 			));
 
 			$response = curl_exec($curl);
